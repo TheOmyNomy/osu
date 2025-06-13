@@ -173,7 +173,7 @@ namespace osu.Game.Rulesets.UI
 
         #region Key Counter Attachment
 
-        public void Attach(InputCountController inputCountController)
+        public virtual void Attach(InputCountController inputCountController)
         {
             Dictionary<T, List<InputKey>> actionKeys = new Dictionary<T, List<InputKey>>();
 

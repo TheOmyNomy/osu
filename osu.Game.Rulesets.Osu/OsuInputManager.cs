@@ -12,6 +12,7 @@ using osu.Game.Input.Bindings;
 using osu.Game.Rulesets.Osu.Objects.Drawables;
 using osu.Game.Rulesets.Osu.UI;
 using osu.Game.Rulesets.UI;
+using osu.Game.Screens.Play.HUD;
 using osuTK;
 
 namespace osu.Game.Rulesets.Osu
@@ -65,6 +66,28 @@ namespace osu.Game.Rulesets.Osu
             if ((e is MouseMoveEvent || e is TouchMoveEvent) && !AllowUserCursorMovement) return false;
 
             return base.Handle(e);
+        }
+
+        public override void Attach(InputCountController inputCountController)
+        {
+            int number = 1;
+
+            foreach (IKeyBinding keyBinding in KeyBindingContainer.DefaultKeyBindings)
+            {
+                OsuAction action = keyBinding.GetAction<OsuAction>();
+
+                if (action == OsuAction.Smoke)
+                    continue;
+
+                InputKey inputKey = keyBinding.KeyCombination.Keys.First();
+
+                KeyCounterActionTrigger<OsuAction> trigger = new KeyCounterActionTrigger<OsuAction>(action, keyBinding.KeyCombination, $"B{number}");
+
+                KeyBindingContainer.Add(trigger);
+                inputCountController.Add(trigger);
+
+                number++;
+            }
         }
 
         private partial class OsuKeyBindingContainer : RulesetKeyBindingContainer

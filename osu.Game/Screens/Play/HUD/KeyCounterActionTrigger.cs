@@ -1,7 +1,6 @@
 ﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Input.Bindings;
@@ -19,13 +18,14 @@ namespace osu.Game.Screens.Play.HUD
         /// </summary>
         public KeyCombination KeyCombination { get; }
 
-        private KeyCombination? lastKeyCombination;
+        private KeyCombination lastKeyCombination;
 
-        public KeyCounterActionTrigger(T action, KeyCombination keyCombination)
-            : base($"B{(int)(object)action + 1}")
+        public KeyCounterActionTrigger(T action, KeyCombination keyCombination, string? name = null)
+            : base(name ?? $"B{(int)(object)action + 1}")
         {
             Action = action;
             KeyCombination = keyCombination;
+            lastKeyCombination = new KeyCombination(new[] { InputKey.None });
         }
 
         public bool OnPressed(KeyBindingPressEvent<T> e)
@@ -34,8 +34,11 @@ namespace osu.Game.Screens.Play.HUD
                 return false;
 
             KeyCombination currentKeyCombination = KeyCombination.FromInputState(e.CurrentState);
-            InputKey[] keys = getKeys(currentKeyCombination);
+            InputKey[] keys = getKeysChanged(currentKeyCombination);
             lastKeyCombination = currentKeyCombination;
+
+            if (keys.Length == 0)
+                return false;
 
             Activate(keys, Clock.Rate >= 0);
             return false;
@@ -47,23 +50,20 @@ namespace osu.Game.Screens.Play.HUD
                 return;
 
             KeyCombination currentKeyCombination = KeyCombination.FromInputState(e.CurrentState);
-            InputKey[] keys = getKeys(currentKeyCombination);
+            InputKey[] keys = getKeysChanged(currentKeyCombination);
             lastKeyCombination = currentKeyCombination;
+
+            if (keys.Length == 0)
+                return;
 
             Deactivate(keys, Clock.Rate >= 0);
         }
 
-        private InputKey[] getKeys(KeyCombination currentKeyCombination)
+        private InputKey[] getKeysChanged(KeyCombination currentKeyCombination)
         {
-            if (!lastKeyCombination.HasValue)
-                return Array.Empty<InputKey>();
-
             return currentKeyCombination.Keys
-                                        .Except(lastKeyCombination.Value.Keys)
-                                        .Concat(
-                                            lastKeyCombination.Value.Keys
-                                                              .Except(currentKeyCombination.Keys)
-                                        )
+                                        .Except(lastKeyCombination.Keys)
+                                        .Concat(lastKeyCombination.Keys.Except(currentKeyCombination.Keys))
                                         .Where(x => KeyCombination.Keys.Contains(x))
                                         .ToArray();
         }

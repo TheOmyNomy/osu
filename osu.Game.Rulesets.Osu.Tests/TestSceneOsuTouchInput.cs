@@ -1,6 +1,7 @@
 ﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using System;
 using System.Diagnostics;
 using NUnit.Framework;
 using osu.Framework.Allocation;
@@ -665,7 +666,7 @@ namespace osu.Game.Rulesets.Osu.Tests
             {
                 if (e.Action == Action)
                 {
-                    Activate();
+                    Activate(Array.Empty<InputKey>());
                 }
 
                 return false;
@@ -674,7 +675,7 @@ namespace osu.Game.Rulesets.Osu.Tests
             public void OnReleased(KeyBindingReleaseEvent<OsuAction> e)
             {
                 if (e.Action == Action)
-                    Deactivate();
+                    Deactivate(Array.Empty<InputKey>());
             }
         }
 

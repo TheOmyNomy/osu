@@ -85,6 +85,14 @@ namespace osu.Game.Skinning
                 keySprite.Texture = keyTexture;
         }
 
+        protected override void LoadComplete()
+        {
+            base.LoadComplete();
+
+            if (CountPresses.Value > 0)
+                overlayKeyText.Text = CountPresses.Value.ToString();
+        }
+
         protected override void Activate(InputKey[] inputKeys, bool forwardPlayback = true)
         {
             base.Activate(inputKeys, forwardPlayback);

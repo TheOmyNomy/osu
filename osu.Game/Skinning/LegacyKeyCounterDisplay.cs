@@ -15,6 +15,9 @@ namespace osu.Game.Skinning
 {
     public partial class LegacyKeyCounterDisplay : KeyCounterDisplay
     {
+        private static readonly Colour4 active_colour_top = Colour4.FromHex(@"#ffde00");
+        private static readonly Colour4 active_colour_bottom = Colour4.FromHex(@"#f8009e");
+
         protected override FillFlowContainer<KeyCounter> KeyFlow { get; }
 
         private readonly Sprite backgroundSprite;
@@ -58,6 +61,17 @@ namespace osu.Game.Skinning
 
             if (backgroundTexture != null)
                 backgroundSprite.Texture = backgroundTexture;
+
+            for (int i = 0; i < KeyFlow.Count; ++i)
+            {
+                LegacyKeyCounter keyCounter = ((LegacyKeyCounter)KeyFlow[i]);
+
+                bool isTop = i < 2;
+                int number = i % 2 + 1;
+
+                keyCounter.ActiveColour = isTop ? active_colour_top : active_colour_bottom;
+                keyCounter.Text = $"{(isTop ? 'K' : 'M')}{number}";
+            }
         }
 
         protected override KeyCounter CreateCounter(InputTrigger trigger) => new LegacyKeyCounter(trigger)

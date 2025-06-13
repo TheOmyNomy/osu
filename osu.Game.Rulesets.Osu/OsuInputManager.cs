@@ -79,8 +79,6 @@ namespace osu.Game.Rulesets.Osu
                 if (action == OsuAction.Smoke)
                     continue;
 
-                InputKey inputKey = keyBinding.KeyCombination.Keys.First();
-
                 KeyCounterActionTrigger<OsuAction> trigger = new KeyCounterActionTrigger<OsuAction>(action, keyBinding.KeyCombination, $"B{number}");
 
                 KeyBindingContainer.Add(trigger);

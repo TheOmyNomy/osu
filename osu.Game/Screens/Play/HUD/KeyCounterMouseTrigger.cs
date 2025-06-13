@@ -1,6 +1,7 @@
 ﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
 using osuTK;
 using osuTK.Input;
@@ -37,7 +38,7 @@ namespace osu.Game.Screens.Play.HUD
         protected override bool OnMouseDown(MouseDownEvent e)
         {
             if (e.Button == Button)
-                Activate();
+                Activate(new[] { KeyCombination.FromMouseButton(e.Button) });
 
             return base.OnMouseDown(e);
         }
@@ -45,7 +46,7 @@ namespace osu.Game.Screens.Play.HUD
         protected override void OnMouseUp(MouseUpEvent e)
         {
             if (e.Button == Button)
-                Deactivate();
+                Deactivate(new[] { KeyCombination.FromMouseButton(e.Button) });
 
             base.OnMouseUp(e);
         }

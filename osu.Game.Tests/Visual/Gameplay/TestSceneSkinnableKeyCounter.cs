@@ -24,8 +24,8 @@ namespace osu.Game.Tests.Visual.Gameplay
                 Add(controller);
                 controller.Add(new KeyCounterKeyboardTrigger(Key.Z));
                 controller.Add(new KeyCounterKeyboardTrigger(Key.X));
-                controller.Add(new KeyCounterKeyboardTrigger(Key.C));
-                controller.Add(new KeyCounterKeyboardTrigger(Key.V));
+                controller.Add(new KeyCounterMouseTrigger(MouseButton.Left));
+                controller.Add(new KeyCounterMouseTrigger(MouseButton.Right));
 
                 foreach (var trigger in controller.Triggers)
                     Add(trigger);

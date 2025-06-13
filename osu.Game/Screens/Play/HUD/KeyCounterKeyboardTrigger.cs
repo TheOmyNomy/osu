@@ -1,6 +1,7 @@
 ﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using osu.Framework.Input.Bindings;
 using osu.Framework.Input.Events;
 using osuTK.Input;
 
@@ -20,7 +21,7 @@ namespace osu.Game.Screens.Play.HUD
         {
             if (e.Key == Key)
             {
-                Activate();
+                Activate(new[] { KeyCombination.FromKey(e.Key) });
             }
 
             return base.OnKeyDown(e);
@@ -29,7 +30,7 @@ namespace osu.Game.Screens.Play.HUD
         protected override void OnKeyUp(KeyUpEvent e)
         {
             if (e.Key == Key)
-                Deactivate();
+                Deactivate(new[] { KeyCombination.FromKey(e.Key) });
 
             base.OnKeyUp(e);
         }

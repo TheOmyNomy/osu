@@ -3,6 +3,7 @@
 
 using osu.Framework.Bindables;
 using osu.Framework.Graphics;
+using osu.Framework.Input.Bindings;
 
 namespace osu.Game.Screens.Play.HUD
 {
@@ -14,14 +15,16 @@ namespace osu.Game.Screens.Play.HUD
         /// <summary>
         /// Callback to invoke when the associated input has been activated.
         /// </summary>
+        /// <param name="inputKeys">An <see cref="InputKey">InputKey[]</see> array containing inputs used to activate this trigger.</param>
         /// <param name="forwardPlayback">Whether gameplay is progressing in the forward direction time-wise.</param>
-        public delegate void OnActivateCallback(bool forwardPlayback);
+        public delegate void OnActivateCallback(InputKey[] inputKeys, bool forwardPlayback);
 
         /// <summary>
         /// Callback to invoke when the associated input has been deactivated.
         /// </summary>
+        /// <param name="inputKeys">An <see cref="InputKey">InputKey[]</see> array containing inputs used to activate this trigger.</param>
         /// <param name="forwardPlayback">Whether gameplay is progressing in the forward direction time-wise.</param>
-        public delegate void OnDeactivateCallback(bool forwardPlayback);
+        public delegate void OnDeactivateCallback(InputKey[] inputKeys, bool forwardPlayback);
 
         public event OnActivateCallback? OnActivate;
         public event OnDeactivateCallback? OnDeactivate;
@@ -49,22 +52,22 @@ namespace osu.Game.Screens.Play.HUD
             Name = name;
         }
 
-        protected void Activate(bool forwardPlayback = true)
+        protected void Activate(InputKey[] inputKeys, bool forwardPlayback = true)
         {
             if (forwardPlayback && isCounting.Value)
                 activationCount.Value++;
 
             IsActive = true;
-            OnActivate?.Invoke(forwardPlayback);
+            OnActivate?.Invoke(inputKeys, forwardPlayback);
         }
 
-        protected void Deactivate(bool forwardPlayback = true)
+        protected void Deactivate(InputKey[] inputKeys, bool forwardPlayback = true)
         {
             if (!forwardPlayback && isCounting.Value)
                 activationCount.Value--;
 
             IsActive = false;
-            OnDeactivate?.Invoke(forwardPlayback);
+            OnDeactivate?.Invoke(inputKeys, forwardPlayback);
         }
     }
 }

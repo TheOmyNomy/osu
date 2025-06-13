@@ -1,8 +1,10 @@
 ﻿// Copyright (c) ppy Pty Ltd <contact@ppy.sh>. Licensed under the MIT Licence.
 // See the LICENCE file in the repository root for full licence text.
 
+using System;
 using osu.Framework.Bindables;
 using osu.Framework.Graphics.Containers;
+using osu.Framework.Input.Bindings;
 
 namespace osu.Game.Screens.Play.HUD
 {
@@ -41,15 +43,15 @@ namespace osu.Game.Screens.Play.HUD
             base.LoadComplete();
 
             if (Trigger.IsActive)
-                Activate();
+                Activate(Array.Empty<InputKey>());
         }
 
-        protected virtual void Activate(bool forwardPlayback = true)
+        protected virtual void Activate(InputKey[] inputKeys, bool forwardPlayback = true)
         {
             isActive.Value = true;
         }
 
-        protected virtual void Deactivate(bool forwardPlayback = true)
+        protected virtual void Deactivate(InputKey[] inputKeys, bool forwardPlayback = true)
         {
             isActive.Value = false;
         }

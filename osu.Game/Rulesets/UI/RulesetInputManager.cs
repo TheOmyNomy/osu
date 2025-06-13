@@ -2,6 +2,7 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using osu.Framework.Allocation;
 using osu.Framework.Bindables;
@@ -174,14 +175,27 @@ namespace osu.Game.Rulesets.UI
 
         public void Attach(InputCountController inputCountController)
         {
-            var triggers = KeyBindingContainer.DefaultKeyBindings
-                                              .Select(b => b.GetAction<T>())
-                                              .Distinct()
-                                              .Select(action => new KeyCounterActionTrigger<T>(action))
-                                              .ToArray();
+            Dictionary<T, List<InputKey>> actionKeys = new Dictionary<T, List<InputKey>>();
 
-            KeyBindingContainer.AddRange(triggers);
-            inputCountController.AddRange(triggers);
+            foreach (IKeyBinding keyBinding in KeyBindingContainer.DefaultKeyBindings)
+            {
+                T action = keyBinding.GetAction<T>();
+
+                if (!actionKeys.TryGetValue(action, out List<InputKey>? keys))
+                {
+                    keys = new List<InputKey>();
+                    actionKeys.Add(action, keys);
+                }
+
+                keys.AddRange(keyBinding.KeyCombination.Keys);
+            }
+
+            foreach (KeyValuePair<T, List<InputKey>> actionKey in actionKeys)
+            {
+                KeyCounterActionTrigger<T> trigger = new KeyCounterActionTrigger<T>(actionKey.Key, new KeyCombination(actionKey.Value));
+                KeyBindingContainer.Add(trigger);
+                inputCountController.Add(trigger);
+            }
         }
 
         #endregion

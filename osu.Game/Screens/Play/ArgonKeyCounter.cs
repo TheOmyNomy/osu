@@ -6,6 +6,7 @@ using osu.Framework.Allocation;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
 using osu.Framework.Graphics.Shapes;
+using osu.Framework.Input.Bindings;
 using osu.Game.Graphics;
 using osu.Game.Graphics.Containers;
 using osu.Game.Graphics.Sprites;
@@ -111,9 +112,9 @@ namespace osu.Game.Screens.Play
                 countText.Origin = isRotated ? Anchor.BottomCentre : Anchor.BottomLeft;
         }
 
-        protected override void Activate(bool forwardPlayback = true)
+        protected override void Activate(InputKey[] inputKeys, bool forwardPlayback = true)
         {
-            base.Activate(forwardPlayback);
+            base.Activate(inputKeys, forwardPlayback);
 
             keyNameText
                 .FadeColour(Colour4.White, 10, Easing.OutQuint);
@@ -125,9 +126,9 @@ namespace osu.Game.Screens.Play
                 .MoveToY(indicator_press_offset, 60, Easing.OutQuint);
         }
 
-        protected override void Deactivate(bool forwardPlayback = true)
+        protected override void Deactivate(InputKey[] inputKeys, bool forwardPlayback = true)
         {
-            base.Deactivate(forwardPlayback);
+            base.Deactivate(inputKeys, forwardPlayback);
 
             keyNameText
                 .FadeColour(colours.Blue0, 200, Easing.OutQuart);

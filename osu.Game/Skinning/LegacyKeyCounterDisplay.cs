@@ -64,7 +64,7 @@ namespace osu.Game.Skinning
 
             for (int i = 0; i < KeyFlow.Count; ++i)
             {
-                LegacyKeyCounter keyCounter = ((LegacyKeyCounter)KeyFlow[i]);
+                LegacyKeyCounter keyCounter = (LegacyKeyCounter)KeyFlow[i];
 
                 bool isTop = i < 2;
                 int number = i % 2 + 1;
